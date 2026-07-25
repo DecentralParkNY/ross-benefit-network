@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RightHere — network the room you're in</title>
+<style>
+  :root{
+    --bg:#08090f;
+    --ink:#f3f4fb;
+    --muted:#8b8fa8;
+    --glow:#5ef2c0;
+    --glow2:#7aa2ff;
+    --card:#12141f;
+    --line:#20233a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,system-ui,sans-serif;
+    background:radial-gradient(120% 90% at 50% -10%,#141833 0%,var(--bg) 55%);
+    color:var(--ink);
+    min-height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:28px 18px;
+    overflow-x:hidden;
+  }
+  .phone{
+    width:min(430px,100%);
+    background:linear-gradient(180deg,#0d0f19,#0a0b12);
+    border:1px solid var(--line);
+    border-radius:34px;
+    padding:26px 24px 30px;
+    box-shadow:0 40px 120px rgba(0,0,0,.6),0 0 0 8px rgba(255,255,255,.02);
+    position:relative;
+    overflow:hidden;
+  }
+  .brandrow{display:flex;align-items:center;gap:10px;margin-bottom:22px}
+  .dot{
+    width:11px;height:11px;border-radius:50%;
+    background:var(--glow);
+    box-shadow:0 0 14px var(--glow);
+    animation:pulse 1.8s infinite;
+  }
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.8)}}
+  .brand{font-weight:800;letter-spacing:-.5px;font-size:19px}
+  .brand span{color:var(--glow)}
+  .loc{margin-left:auto;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1.4px}
+
+  .pitch{
+    font-size:30px;
+    line-height:1.12;
+    font-weight:800;
+    letter-spacing:-1px;
+    margin:6px 0 6px;
+  }
+  .pitch em{font-style:normal;color:var(--glow);background:linear-gradient(90deg,var(--glow),var(--glow2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .sub{color:var(--muted);font-size:13.5px;line-height:1.5;margin-bottom:22px}
+
+  .radar{
+    position:relative;
+    height:230px;
+    margin:8px 0 22px;
+    border-radius:22px;
+    background:radial-gradient(circle at 50% 50%,rgba(94,242,192,.06),transparent 70%);
+    border:1px solid var(--line);
+    overflow:hidden;
+  }
+  .ring{
+    position:absolute;top:50%;left:50%;
+    border:1px solid rgba(122,162,255,.18);
+    border-radius:50%;
+    transform:translate(-50%,-50%);
+  }
+  .r1{width:60px;height:60px}
+  .r2{width:130px;height:130px}
+  .r3{width:210px;height:210px}
+  .sweep{
+    position:absolute;top:50%;left:50%;
+    width:105px;height:2px;
+    transform-origin:0 0;
+    background:linear-gradient(90deg,var(--glow),transparent);
+    animation:spin 3.4s linear infinite;
+  }
+  @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+  .me{
+    position:absolute;top:50%;left:50%;width:14px;height:14px;
+    background:var(--glow);border-radius:50%;transform:translate(-50%,-50%);
+    box-shadow:0 0 18px var(--glow);
+  }
+  .peer{
+    position:absolute;width:36px;height:36px;border-radius:50%;
+    transform:translate(-50%,-50%);
+    background:var(--card);border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;font-size:15px;
+    opacity:0;animation:appear .5s forwards;
+    cursor:pointer;transition:transform .2s;
+  }
+  .peer:hover{transform:translate(-50%,-50%) scale(1.12);border-color:var(--glow)}
+  .p1{top:32%;left:30%;animation-delay:.3s}
+  .p2{top:60%;left:26%;animation-delay:.8s}
+  .p3{top:28%;left:70%;animation-delay:1.3s}
+  .p4{top:68%;left:66%;animation-delay:1.8s}
+  @keyframes appear{to{opacity:1}}
+
+  .cta{
+    width:100%;
+    border:none;
+    border-radius:16px;
+    padding:17px;
+    font-size:16px;
+    font-weight:800;
+    letter-spacing:.2px;
+    color:#04120c;
+    background:linear-gradient(90deg,var(--glow),var(--glow2));
+    cursor:pointer;
+    box-shadow:0 14px 40px rgba(94,242,192,.28);
+    transition:transform .15s,box-shadow .3s;
+  }
+  .cta:active{transform:scale(.97)}
+  .cta.live{
+    background:var(--card);
+    color:var(--glow);
+    border:1px solid var(--glow);
+    box-shadow:0 0 30px rgba(94,242,192,.18);
+  }
+  .count{
+    text-align:center;
+    font-size:12px;
+    color:var(--muted);
+    margin-top:14px;
+    min-height:16px;
+  }
+  .count b{color:var(--ink)}
+</style>
+</head>
+<body>
+  <div class="phone">
+    <div class="brandrow">
+      <div class="dot"></div>
+      <div class="brand">Right<span>Here</span></div>
+      <div class="loc">◎ this room</div>
+    </div>
+
+    <div class="pitch">Everyone worth<br>meeting is <em>already<br>in the room.</em></div>
+    <div class="sub">RightHere turns wherever you're standing into a live network. No adding, no searching — just the people around you, right now.</div>
+
+    <div class="radar">
+      <div class="ring r1"></div>
+      <div class="ring r2"></div>
+      <div class="ring r3"></div>
+      <div class="sweep"></div>
+      <div class="peer p1">🎧</div>
+      <div class="peer p2">🎨</div>
+      <div class="peer p3">🛠️</div>
+      <div class="peer p4">☕</div>
+      <div class="me"></div>
+    </div>
+
+    <button class="cta" id="cta">Go live in this room</button>
+    <div class="count" id="count">Tap to broadcast — 4 people are within earshot</div>
+  </div>
+
+<script>
+  const cta = document.getElementById('cta');
+  const count = document.getElementById('count');
+  let live = false;
+  cta.addEventListener('click', ()=>{
+    live = !live;
+    if(live){
+      cta.textContent = '● You are live';
+      cta.classList.add('live');
+      count.innerHTML = '<b>4 nearby</b> can see you now · say hi';
+    } else {
+      cta.textContent = 'Go live in this room';
+      cta.classList.remove('live');
+      count.innerHTML = 'Tap to broadcast — 4 people are within earshot';
+    }
+  });
+  document.querySelectorAll('.peer').forEach(p=>{
+    p.addEventListener('click',()=>{
+      count.innerHTML = live ? 'Wave sent 👋 — waiting for them to wave back' : 'Go live first, then wave 👋';
+    });
+  });
+</script>
+</body>
+</html>
